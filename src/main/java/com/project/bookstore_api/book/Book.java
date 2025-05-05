@@ -1,8 +1,10 @@
 package com.project.bookstore_api.book;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+
 import lombok.*;
 
 @Getter
@@ -18,12 +20,16 @@ public class Book {
     private Long id;
 
     @Column(name = "title")
+    @NotBlank(message = "Title cannot be blank")
     @Size(min = 3, max = 50)
     private String title ;
 
+    @NotBlank(message = "Author cannot be blank")
     private String author;
-    @Positive
+
+    @PositiveOrZero(message = "Price cannot be negative")
     private double price;
-    @Positive
+
+    @PositiveOrZero(message = "Stock cannot be negative")
     private int stock;
 }

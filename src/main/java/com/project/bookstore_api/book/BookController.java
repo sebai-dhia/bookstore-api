@@ -1,10 +1,17 @@
 package com.project.bookstore_api.book;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
-
 import java.util.List;
-import java.util.Optional;
+
+import jakarta.validation.Valid;
+
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.project.bookstore_api.book.dto.BookRequestDto;
+import com.project.bookstore_api.book.dto.BookResponseDto;
+
 
 @RestController
 @RequestMapping("/api/books")
@@ -17,29 +24,30 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getBooks() {
+    public List<BookResponseDto> getBooks() {
         return bookService.getBooks();
     }
 
     @GetMapping("/page")
-    public Page<Book> getBooksPaged(@RequestParam int page, @RequestParam int size) {
+    public Page<BookResponseDto> getBooksPaged(@RequestParam int page, @RequestParam int size) {
         return bookService.getBooks(page, size);
     }
-    @GetMapping("/test")
-    public String test() {
-        return "Controller is working!";
-    }
-
 
     @GetMapping("/{id}")
-    public Optional<Book> getBookById(@PathVariable Long id) {
-        return bookService.getBook(id);
+    public BookResponseDto getBookById(@PathVariable Long id) {
+        return bookService.getBook(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
     }
 
     @PostMapping
-    public Long createBook(@RequestBody Book book) {
-        System.out.println("PASS: " + book.getAuthor());
-        return bookService.createBook(book);
+    public Long createBook(@Valid @RequestBody BookRequestDto bookRequestDto) {
+        System.out.println("PASS: " + bookRequestDto.author());
+        return bookService.createBook(bookRequestDto);
+    }
+
+    @PostMapping("/batch")
+    public List<Long> createBooks(@Valid @RequestBody List<BookRequestDto> bookRequestDtos) {
+        return bookService.createBooks(bookRequestDtos);
     }
 
     @PatchMapping("/{id}/price")
