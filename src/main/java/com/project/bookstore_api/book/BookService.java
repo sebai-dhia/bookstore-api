@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import com.project.bookstore_api.book.dto.BookRequestDto;
 import com.project.bookstore_api.book.dto.BookResponseDto;
 import com.project.bookstore_api.book.mapper.BookMapperImp;
-import com.project.bookstore_api.exception.BookNotFoundException;
+import com.project.bookstore_api.book.exception.BookNotFoundException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,9 +25,9 @@ public class BookService {
         this.bookMapperImp = bookMapperImp;
     }
 
-    public Optional<BookResponseDto> getBook(Long id){
-        return bookRepository.findById(id)
-                             .map(bookMapperImp::toDto);
+    public BookResponseDto getBook(Long id){
+        Book book = bookRepository.findById(id).orElseThrow(()->new BookNotFoundException(id));
+        return bookMapperImp.toDto(book);
     }
 
     public List<BookResponseDto> getBooks(){
