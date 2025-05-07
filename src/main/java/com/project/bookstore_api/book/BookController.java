@@ -5,9 +5,12 @@ import java.util.List;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.project.bookstore_api.book.dto.BookRequestDto;
@@ -15,6 +18,7 @@ import com.project.bookstore_api.book.dto.BookResponseDto;
 
 @RestController
 @RequestMapping("/api/books")
+@Validated
 public class BookController {
 
     private final BookService bookService;
@@ -52,18 +56,33 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/price")
-    public ResponseEntity<Long> updatePrice(@PathVariable Long id, @RequestParam double price) {
-        return ResponseEntity.ok(bookService.updatePrice(id, price));
+    public ResponseEntity<Void> updatePrice(@PathVariable Long id,
+            @RequestParam @PositiveOrZero(message = "Price cannot be negative") double price) {
+        bookService.updatePrice(id, price);
+        return  ResponseEntity.noContent().build();
+
     }
 
     @PatchMapping("/{id}/stock")
-    public ResponseEntity<Long> updateStock(@PathVariable Long id, @RequestParam int stock) {
-        return ResponseEntity.ok(bookService.updateStock(id, stock));
+    public ResponseEntity<Void> updateStock(@PathVariable Long id,
+            @RequestParam @PositiveOrZero(message = "Stock cannot be negative") int stock) {
+        bookService.updateStock(id, stock);
+        return  ResponseEntity.noContent().build();
+
     }
 
     @PatchMapping("/{id}/author")
-    public ResponseEntity<Long> updateAuthor(@PathVariable Long id, @RequestParam String author) {
-        return ResponseEntity.ok(bookService.updateAuthor(id, author));
+    public ResponseEntity<Void> updateAuthor(@PathVariable Long id,
+            @RequestParam @NotBlank(message = "Author cannot be blank") String author) {
+        bookService.updateAuthor(id, author);
+        return  ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/title")
+    public ResponseEntity<Void> updateTitle(@PathVariable Long id,
+             @RequestParam @NotBlank(message = "Title cannot be blank") String title) {
+        bookService.updateTitle(id, title);
+        return  ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

@@ -1,7 +1,6 @@
 package com.project.bookstore_api.book;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.project.bookstore_api.book.dto.BookRequestDto;
@@ -54,29 +53,31 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    public Long updateBookField(Long id, BookRequestDto bookRequestDto) {
+    public void updateBookField(Long id, BookRequestDto bookRequestDto) {
         Book existingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException(id));
-
         bookMapperImp.updateEntity(bookRequestDto, existingBook);
-
         bookRepository.save(existingBook);
-        return existingBook.getId();
     }
 
-    public Long updatePrice(Long id, double price) {
+    public void updatePrice(Long id, double price) {
         BookRequestDto bookRequestDto = new BookRequestDto(null, null, price, 0);
-        return updateBookField(id, bookRequestDto);
+        updateBookField(id, bookRequestDto);
     }
 
-    public Long updateStock(Long id, int stock) {
+    public void updateStock(Long id, int stock) {
         BookRequestDto bookRequestDto = new BookRequestDto(null, null, 0, stock);
-        return updateBookField(id, bookRequestDto);
+        updateBookField(id, bookRequestDto);
     }
 
-    public Long updateAuthor(Long id, String author) {
+    public void updateAuthor(Long id, String author) {
         BookRequestDto bookRequestDto = new BookRequestDto(null, author, 0, 0);
-        return updateBookField(id, bookRequestDto);
+        updateBookField(id, bookRequestDto);
+    }
+
+    public void updateTitle(Long id, String title) {
+        BookRequestDto bookRequestDto = new BookRequestDto(title, null, 0, 0);
+        updateBookField(id, bookRequestDto);
     }
 
     public void deleteBook(Long id){
