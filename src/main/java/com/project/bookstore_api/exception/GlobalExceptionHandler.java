@@ -3,6 +3,9 @@ package com.project.bookstore_api.exception;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,5 +75,21 @@ public class GlobalExceptionHandler {
 
         return  ResponseEntity.status(ErrorCode.VALIDATION_ERROR.getHttpStatus()).body(errorResponse);
 
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+        Map<String, String> errors = ex.getConstraintViolations().stream()
+                .collect(Collectors.toMap(
+                        v -> v.getPropertyPath().toString().split("\\.")[0],
+                        ConstraintViolation::getMessage
+                ));
+
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.VALIDATION_ERROR, errors)
+                .toBuilder()
+                .path(request.getDescription(false).replace("uri=", ""))
+                .build();
+
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 }
