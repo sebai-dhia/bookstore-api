@@ -11,7 +11,6 @@ import lombok.Data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @Data

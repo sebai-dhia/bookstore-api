@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-import com.project.bookstore_api.book.exception.BookNotFoundException;
-
-
+import com.project.bookstore_api.features.book.exception.BookNotFoundException;
 
 
 @RestControllerAdvice
