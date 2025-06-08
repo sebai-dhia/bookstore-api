@@ -1,14 +1,14 @@
-package com.project.bookstore_api.book.mapper;
+package com.project.bookstore_api.features.book.mapper;
+
+import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import com.project.bookstore_api.book.Book;
-import com.project.bookstore_api.book.dto.BookRequestDto;
-import com.project.bookstore_api.book.dto.BookResponseDto;
-
-import java.util.List;
+import com.project.bookstore_api.features.book.Book;
+import com.project.bookstore_api.features.book.dto.BookRequestDto;
+import com.project.bookstore_api.features.book.dto.BookResponseDto;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
