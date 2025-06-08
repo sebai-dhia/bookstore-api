@@ -1,4 +1,4 @@
-package com.project.bookstore_api.book;
+package com.project.bookstore_api.features.book;
 
 import java.util.List;
 
@@ -10,14 +10,16 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.project.bookstore_api.book.dto.BookRequestDto;
-import com.project.bookstore_api.book.dto.BookResponseDto;
+import com.project.bookstore_api.features.book.dto.BookRequestDto;
+import com.project.bookstore_api.features.book.dto.BookResponseDto;
+import com.project.bookstore_api.features.book.service.BookService;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("books")
 @Validated
 public class BookController {
 
@@ -45,17 +47,20 @@ public class BookController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> createBook(@Valid @RequestBody BookRequestDto bookRequestDto) {
         System.out.println("PASS: " + bookRequestDto.author());
         return ResponseEntity.ok(bookService.createBook(bookRequestDto));
     }
 
     @PostMapping("/batch")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Long>> createBooks(@Valid @RequestBody List<BookRequestDto> bookRequestDtos) {
         return ResponseEntity.ok(bookService.createBooks(bookRequestDtos));
     }
 
     @PatchMapping("/{id}/price")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updatePrice(@PathVariable Long id,
             @RequestParam @PositiveOrZero(message = "Price cannot be negative") double price) {
         bookService.updatePrice(id, price);
@@ -64,6 +69,7 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/stock")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateStock(@PathVariable Long id,
             @RequestParam @PositiveOrZero(message = "Stock cannot be negative") int stock) {
         bookService.updateStock(id, stock);
@@ -72,6 +78,7 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/author")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateAuthor(@PathVariable Long id,
             @RequestParam @NotBlank(message = "Author cannot be blank") String author) {
         bookService.updateAuthor(id, author);
@@ -79,6 +86,7 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/title")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateTitle(@PathVariable Long id,
              @RequestParam @NotBlank(message = "Title cannot be blank") String title) {
         bookService.updateTitle(id, title);
@@ -86,13 +94,14 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/available")
-    public ResponseEntity<Boolean> checkAvailability(@PathVariable Long id) {
-        return ResponseEntity.ok(bookService.checkBookAvailability(id));
+    public ResponseEntity<Boolean> isInStock(@PathVariable Long id) {
+        return ResponseEntity.ok(bookService.isInStock(id));
     }
 }
