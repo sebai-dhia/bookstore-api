@@ -1,4 +1,4 @@
-package com.project.bookstore_api.book;
+package com.project.bookstore_api.features.book;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
