@@ -1,4 +1,4 @@
-package com.project.bookstore_api.book.exception;
+package com.project.bookstore_api.features.book.exception;
 
 public class BookNotFoundException extends RuntimeException {
 
