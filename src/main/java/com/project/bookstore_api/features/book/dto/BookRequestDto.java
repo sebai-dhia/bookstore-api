@@ -1,4 +1,4 @@
-package com.project.bookstore_api.book.dto;
+package com.project.bookstore_api.features.book.dto;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
