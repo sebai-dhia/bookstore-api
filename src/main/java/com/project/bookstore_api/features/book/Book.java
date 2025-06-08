@@ -1,4 +1,4 @@
-package com.project.bookstore_api.book;
+package com.project.bookstore_api.features.book;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
