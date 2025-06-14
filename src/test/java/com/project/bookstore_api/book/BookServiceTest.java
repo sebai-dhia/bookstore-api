@@ -2,15 +2,18 @@ package com.project.bookstore_api.book;
 
 import java.util.Optional;
 
+import com.project.bookstore_api.features.book.Book;
+import com.project.bookstore_api.features.book.BookRepository;
+import com.project.bookstore_api.features.book.mapper.BookMapper;
+import com.project.bookstore_api.features.book.service.BookServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.project.bookstore_api.book.dto.BookResponseDto;
-import com.project.bookstore_api.book.exception.BookNotFoundException;
-import com.project.bookstore_api.book.mapper.BookMapperImp;
+import com.project.bookstore_api.features.book.dto.BookResponseDto;
+import com.project.bookstore_api.features.book.exception.BookNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -24,10 +27,10 @@ public class BookServiceTest {
     BookRepository bookRepository;
 
     @Mock
-    BookMapperImp bookMapperImp;
+    BookMapper bookMapper;
 
     @InjectMocks
-    BookService bookService;
+    BookServiceImpl bookService;
 
     @Test
     void getBookById_ShouldReturnBook_WhenExists(){
@@ -36,7 +39,7 @@ public class BookServiceTest {
         BookResponseDto bookResponseDto =   new BookResponseDto(
                 1L,"clean Code", "Robert Cecil Martin", 100, 200);
 
-        when(bookMapperImp.toDto(book)).thenReturn(bookResponseDto);
+        when(bookMapper.toDto(book)).thenReturn(bookResponseDto);
         when(bookRepository.findById(1L)).thenReturn(Optional.of(book));
 
         // Act
@@ -78,7 +81,7 @@ public class BookServiceTest {
         verify(bookRepository).findById(id);
 
         // Simpler verification using argThat
-        verify(bookMapperImp).updateEntity(
+        verify(bookMapper).updateEntity(
                 argThat(dto ->
                         dto.title() == null &&
                         dto.author() == null &&
@@ -105,7 +108,7 @@ public class BookServiceTest {
         });
 
         verify(bookRepository).findById(id);
-        verifyNoInteractions(bookMapperImp);
+        verifyNoInteractions(bookMapper);
         verify(bookRepository, never()).save(any());
     }
 
