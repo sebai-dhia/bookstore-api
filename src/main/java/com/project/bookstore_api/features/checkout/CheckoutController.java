@@ -2,6 +2,8 @@ package com.project.bookstore_api.features.checkout;
 
 import lombok.RequiredArgsConstructor;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,7 @@ import com.project.bookstore_api.features.checkout.dto.CheckoutResponse;
 
 @RestController
 @RequestMapping("checkout")
+@Tag(name = "Checkout")
 @RequiredArgsConstructor
 public class CheckoutController {
     final private CheckoutService checkoutService;

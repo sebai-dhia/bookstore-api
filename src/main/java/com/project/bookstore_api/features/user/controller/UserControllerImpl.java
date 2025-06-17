@@ -2,6 +2,8 @@ package com.project.bookstore_api.features.user.controller;
 
 import lombok.RequiredArgsConstructor;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,6 +16,7 @@ import com.project.bookstore_api.features.user.service.UserService;
 
 @RestController
 @RequestMapping("user")
+@Tag(name = "User")
 @Service
 @RequiredArgsConstructor
 public class UserControllerImpl implements UserController {

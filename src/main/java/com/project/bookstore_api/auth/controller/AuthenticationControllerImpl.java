@@ -2,6 +2,8 @@ package com.project.bookstore_api.auth.controller;
 
 import jakarta.validation.Valid;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import com.project.bookstore_api.auth.service.GuestSessionService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("auth")
+@Tag(name = "\u200CAuth", description = "Authentication")
 public class AuthenticationControllerImpl implements AuthenticationController {
     private final AuthenticationService autService;
     private final GuestSessionService guestSessionService;

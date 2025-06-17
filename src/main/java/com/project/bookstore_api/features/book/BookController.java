@@ -8,6 +8,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +23,7 @@ import com.project.bookstore_api.features.book.service.BookService;
 
 @RestController
 @RequestMapping("books")
+@Tag(name = "Books")
 @Validated
 public class BookController {
 
@@ -30,6 +34,7 @@ public class BookController {
     }
 
     @GetMapping
+    @Operation(summary = "List all books")
     public ResponseEntity<List<BookResponseDto>> getBooks() {
         return ResponseEntity.ok(bookService.getBooks());
     }
@@ -48,6 +53,7 @@ public class BookController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Create book (Admin)")
     public ResponseEntity<Long> createBook(@Valid @RequestBody BookRequestDto bookRequestDto) {
         System.out.println("PASS: " + bookRequestDto.author());
         return ResponseEntity.ok(bookService.createBook(bookRequestDto));
@@ -61,6 +67,7 @@ public class BookController {
 
     @PatchMapping("/{id}/price")
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Update price (Admin)")
     public ResponseEntity<Void> updatePrice(@PathVariable Long id,
             @RequestParam @PositiveOrZero(message = "Price cannot be negative") double price) {
         bookService.updatePrice(id, price);

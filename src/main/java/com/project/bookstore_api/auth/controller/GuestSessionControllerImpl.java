@@ -6,6 +6,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +20,14 @@ import com.project.bookstore_api.auth.service.GuestSessionService;
 
 @RestController
 @RequestMapping("/guest-token")
+@Tag(name = "\u200BGuest Auth", description = "Guest Customise Token")
 @RequiredArgsConstructor
 @Slf4j
 public class GuestSessionControllerImpl implements GuestSessionController {
 
     private final GuestSessionService service;
 
-    @PostMapping(path = {"", "/"})
+    @PostMapping(path = {""})
     @Override
     public ResponseEntity<AuthenticationResponse> generateGuestToken(
             @RequestHeader(value = "X-Session-Id", defaultValue = "") String sessionIdHeader) throws ServiceUnavailableException {

@@ -4,6 +4,8 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import com.project.bookstore_api.features.order.service.OrderService;
 
 @RestController
 @RequestMapping("order")
+@Tag(name = "Order")
 @RequiredArgsConstructor
 public class OrderControllerImpl implements OrderController{
     private final OrderService service;
