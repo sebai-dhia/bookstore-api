@@ -23,7 +23,7 @@ import com.project.bookstore_api.features.book.service.BookService;
 
 @RestController
 @RequestMapping("books")
-@Tag(name = "Books")
+@Tag(name = "Book")
 @Validated
 public class BookController {
 
