@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    dns:
+      - 8.8.8.8    # Google DNS
+      - 1.1.1.1    # Cloudflare DNS
+    ports:
+      - "8082:8082"
+    env_file:
+      - .env  # Inject secrets from .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:13
+    env_file:
+      - .env  # Shares DB credentials
+    environment:
+      POSTGRES_DB: book
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
