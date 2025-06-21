@@ -2,7 +2,6 @@ package com.project.bookstore_api.features.user.model;
 
 import java.util.List;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
