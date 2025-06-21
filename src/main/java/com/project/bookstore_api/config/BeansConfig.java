@@ -53,15 +53,18 @@ public class BeansConfig {
     CommandLineRunner initAdmin (
             AuthenticationServiceImpl authService,
             @Value("${app.admin.email}") String adminEmail,
-            @Value("${app.admin.password}") String adminPassword) {
+            @Value("${app.admin.password}") String adminPassword,
+            @Value("${app.admin.firstname}") String adminFirstname,
+            @Value("${app.admin.lastname}") String adminLastname,
+            @Value("${app.admin.birthdate}") String adminBirthdate) {
         return args -> {
             try {
                 if (userRepository.findByEmailOrUsername(adminEmail).isEmpty()) {
                     RegistrationRequest adminRequest = new RegistrationRequest(
-                            "dhia",
-                            "sebai",
+                            adminFirstname,
+                            adminLastname,
                             adminEmail,
-                            LocalDate.parse("1998-10-02"),
+                            LocalDate.parse(adminBirthdate),
                             adminPassword
                     );
                     authService.registerAdmin(adminRequest);
